@@ -1,0 +1,488 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Algunos Ejemplos de Inferencias sobre Medias},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Algunos Ejemplos de Inferencias sobre Medias}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\hypertarget{ejemplo-1}{%
+\subsection{Ejemplo 1}\label{ejemplo-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list=}\KeywordTok{ls}\NormalTok{())}
+
+\NormalTok{X <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{6}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{8}\NormalTok{,}
+              \DecValTok{9}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{3}\NormalTok{),}\DataTypeTok{byrow=}\OtherTok{FALSE}\NormalTok{,}\DataTypeTok{ncol=}\DecValTok{2}\NormalTok{)}
+
+\NormalTok{mu0 <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{9}\NormalTok{,}\DecValTok{5}\NormalTok{),}\DataTypeTok{ncol=}\DecValTok{1}\NormalTok{)}
+
+\NormalTok{n <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(X)}
+\NormalTok{p <-}\StringTok{ }\KeywordTok{ncol}\NormalTok{(X)}
+
+\NormalTok{(X.mean <-}\StringTok{ }\KeywordTok{t}\NormalTok{(}\KeywordTok{matrix}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DataTypeTok{ncol=}\NormalTok{n) }\OperatorTok{%*%}\StringTok{ }\NormalTok{X)}\OperatorTok{/}\NormalTok{n)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1]
+## [1,]    8
+## [2,]    6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(D <-}\StringTok{ }\NormalTok{X }\OperatorTok{-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DataTypeTok{nrow=}\NormalTok{n) }\OperatorTok{%*%}\StringTok{ }\KeywordTok{t}\NormalTok{(X.mean))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1] [,2]
+## [1,]   -2    3
+## [2,]    2    0
+## [3,]    0   -3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(S <-}\StringTok{ }\NormalTok{(n}\DecValTok{-1}\NormalTok{)}\OperatorTok{^}\NormalTok{(}\OperatorTok{-}\DecValTok{1}\NormalTok{) }\OperatorTok{*}\StringTok{ }\KeywordTok{t}\NormalTok{(D)}\OperatorTok{%*%}\NormalTok{D)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1] [,2]
+## [1,]    4   -3
+## [2,]   -3    9
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Sinv <-}\StringTok{ }\KeywordTok{solve}\NormalTok{(S)}
+
+\NormalTok{T2 <-}\StringTok{ }\NormalTok{n }\OperatorTok{*}\StringTok{ }\KeywordTok{t}\NormalTok{(X.mean}\OperatorTok{-}\NormalTok{mu0) }\OperatorTok{%*%}\StringTok{ }\NormalTok{Sinv }\OperatorTok{%*%}\StringTok{ }\NormalTok{(X.mean}\OperatorTok{-}\NormalTok{mu0)}
+
+\CommentTok{# T^2 esta distribuida como ((n-1)*p)/(n-p)*qf(1-alpha,p,n-p)}
+
+\NormalTok{(}\DecValTok{3-1}\NormalTok{)}\OperatorTok{*}\DecValTok{2}\OperatorTok{/}\NormalTok{(}\DecValTok{3-2}\NormalTok{)}\OperatorTok{*}\KeywordTok{qf}\NormalTok{(}\DecValTok{1}\FloatTok{-0.05}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3-2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 798
+\end{verbatim}
+
+\hypertarget{ejemplo-sweat-data}{%
+\subsection{Ejemplo Sweat Data}\label{ejemplo-sweat-data}}
+
+\hypertarget{probando-un-vector-medio-multivariado-con-t2}{%
+\subsubsection{\texorpdfstring{Probando un vector medio multivariado con
+\(T^{2}\)}{Probando un vector medio multivariado con T\^{}\{2\}}}\label{probando-un-vector-medio-multivariado-con-t2}}
+
+Se analizó la transpiración de 20 mujeres sanas. Se midieron tres
+componentes, \(X_{1} =\) tasa de sudoración, \(X_{2}=\) contenido de
+sodio y \(X_{3} =\) contenido de potasio, y se presentan los resultados
+(sweat dataset).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list=}\KeywordTok{ls}\NormalTok{())}
+
+\NormalTok{dat <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}\StringTok{"sweat.DAT"}\NormalTok{)}
+\KeywordTok{names}\NormalTok{(dat)[}\DecValTok{1}\NormalTok{] <-}\StringTok{ "Sweat rate"}
+\KeywordTok{names}\NormalTok{(dat)[}\DecValTok{2}\NormalTok{] <-}\StringTok{ "Sodium"}
+\KeywordTok{names}\NormalTok{(dat)[}\DecValTok{3}\NormalTok{] <-}\StringTok{ "Potassium"}
+\KeywordTok{head}\NormalTok{(dat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Sweat rate Sodium Potassium
+## 1        3.7   48.5       9.3
+## 2        5.7   65.1       8.0
+## 3        3.8   47.2      10.9
+## 4        3.2   53.2      12.0
+## 5        3.1   55.5       9.7
+## 6        4.6   36.1       7.9
+\end{verbatim}
+
+Pruebe la hipótesis \(H_{0}: \boldsymbol {\mu} ^ {\prime} = [4,50,10]\)
+contra \(H_{1}: \boldsymbol {\mu} ^ {\prime} \neq [4,50,10]\) al nivel
+de significancia \(\alpha = .10\).
+
+Para una prueba de la hipótesis
+\(H_{0}: \boldsymbol {\mu} = \boldsymbol {\mu} _{0}\) versus
+\(H_{1}: \boldsymbol { \mu} \neq \boldsymbol {\mu} _{0}.\) En el nivel
+de significancia \(\alpha\), rechazamos \(H_{0}\) a favor de \(H_{1}\)
+si el \[
+T ^ {2} = n \left (\overline {\mathbf {x}} - \boldsymbol {\mu} _{0} \right) ^ {\prime} \mathbf {S} ^ {- 1} \left (\overline {\mathbf {x}} - \boldsymbol {\mu} _{0} \right)> \frac {(n-1) p} {(np)} F_{p, np} (\alpha)
+\] Primero determinamos el estadístico \(T^2\):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X <-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(dat)}
+\NormalTok{n <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(X)}
+\NormalTok{p <-}\StringTok{ }\KeywordTok{ncol}\NormalTok{(X)}
+\NormalTok{X.mean <-}\StringTok{ }\KeywordTok{t}\NormalTok{(}\KeywordTok{matrix}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DataTypeTok{ncol=}\NormalTok{n) }\OperatorTok{%*%}\StringTok{ }\NormalTok{X)}\OperatorTok{/}\NormalTok{n}
+\NormalTok{D <-}\StringTok{ }\NormalTok{X }\OperatorTok{-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DataTypeTok{nrow=}\NormalTok{n) }\OperatorTok{%*%}\StringTok{ }\KeywordTok{t}\NormalTok{(X.mean)}
+\NormalTok{S <-}\StringTok{ }\NormalTok{(n}\DecValTok{-1}\NormalTok{)}\OperatorTok{^}\NormalTok{(}\OperatorTok{-}\DecValTok{1}\NormalTok{) }\OperatorTok{*}\StringTok{ }\KeywordTok{t}\NormalTok{(D)}\OperatorTok{%*%}\NormalTok{D}
+\NormalTok{Sinv <-}\StringTok{ }\KeywordTok{solve}\NormalTok{(S)}
+
+\NormalTok{mu =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{50}\NormalTok{,}\DecValTok{10}\NormalTok{)}
+
+\NormalTok{(}\DataTypeTok{T2 =}\NormalTok{ n}\OperatorTok{*}\KeywordTok{t}\NormalTok{(X.mean}\OperatorTok{-}\NormalTok{mu)}\OperatorTok{%*%}\NormalTok{Sinv}\OperatorTok{%*%}\NormalTok{(X.mean}\OperatorTok{-}\NormalTok{mu))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          [,1]
+## [1,] 9.738773
+\end{verbatim}
+
+Y luego calculamos el valor crítico:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{alpha <-}\StringTok{ }\FloatTok{0.1} \CommentTok{# Nivel de significancia}
+
+\NormalTok{(critical.value <-}\StringTok{ }\NormalTok{(p}\OperatorTok{*}\NormalTok{(n}\DecValTok{-1}\NormalTok{))}\OperatorTok{/}\NormalTok{(n}\OperatorTok{-}\NormalTok{p)}\OperatorTok{*}\KeywordTok{qf}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{alpha,p,n}\OperatorTok{-}\NormalTok{p))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 8.172573
+\end{verbatim}
+
+Y comprobamos si el estadístico es mayor o menor que el valor crítico:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(T2 }\OperatorTok{>}\StringTok{ }\NormalTok{critical.value)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1]
+## [1,] TRUE
+\end{verbatim}
+
+Y por lo tanto al nivel de un \(\alpha=0.1\) rechazamos la hipótesis
+nula.
+
+\hypertarget{ejemplo-de-radiaciuxf3n}{%
+\subsection{Ejemplo de Radiación}\label{ejemplo-de-radiaciuxf3n}}
+
+El gobierno federal requiere que el departamento de control de calidad
+de un fabricante de hornos microondas controle la cantidad de radiación
+emitida cuando las puertas de los hornos están cerradas. Se realizaron
+observaciones de la radiación emitida a través de puertas cerradas de
+\(n = 42\) en hornos seleccionados al azar.Las mediciones de radiación
+también se registraron a través de las puertas abiertas de los hornos
+microondas.
+
+Leemos los datos
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list=}\KeywordTok{ls}\NormalTok{())}
+
+\NormalTok{alpha <-}\StringTok{ }\FloatTok{0.05}
+
+\NormalTok{dat.closed <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}\StringTok{"closed.DAT"}\NormalTok{) }\CommentTok{# Door closed}
+\NormalTok{dat.open <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}\StringTok{"open.DAT"}\NormalTok{) }\CommentTok{# Door Open}
+\NormalTok{dat <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{closed=}\NormalTok{dat.closed[,}\DecValTok{1}\NormalTok{]}\OperatorTok{^}\NormalTok{.}\DecValTok{25}\NormalTok{, }
+                  \DataTypeTok{open=}\NormalTok{dat.open[,}\DecValTok{1}\NormalTok{]}\OperatorTok{^}\NormalTok{.}\DecValTok{25}\NormalTok{)}
+
+\KeywordTok{head}\NormalTok{(dat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      closed      open
+## 1 0.6223330 0.7400828
+## 2 0.5477226 0.5477226
+## 3 0.6513556 0.7400828
+## 4 0.5623413 0.5623413
+## 5 0.4728708 0.5623413
+## 6 0.5885662 0.5885662
+\end{verbatim}
+
+Realizamos la inferencia para una prueba de hipótesis de que la media es
+\(\mu=(0.562,0.589)\)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X <-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(dat)}
+\NormalTok{n <-}\StringTok{ }\KeywordTok{nrow}\NormalTok{(X)}
+\NormalTok{p <-}\StringTok{ }\KeywordTok{ncol}\NormalTok{(X)}
+\NormalTok{X.mean <-}\StringTok{ }\KeywordTok{t}\NormalTok{(}\KeywordTok{matrix}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DataTypeTok{ncol=}\NormalTok{n) }\OperatorTok{%*%}\StringTok{ }\NormalTok{X)}\OperatorTok{/}\NormalTok{n}
+\NormalTok{D <-}\StringTok{ }\NormalTok{X }\OperatorTok{-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DataTypeTok{nrow=}\NormalTok{n) }\OperatorTok{%*%}\StringTok{ }\KeywordTok{t}\NormalTok{(X.mean)}
+\NormalTok{S <-}\StringTok{ }\NormalTok{(n}\DecValTok{-1}\NormalTok{)}\OperatorTok{^}\NormalTok{(}\OperatorTok{-}\DecValTok{1}\NormalTok{) }\OperatorTok{*}\StringTok{ }\KeywordTok{t}\NormalTok{(D)}\OperatorTok{%*%}\NormalTok{D}
+\NormalTok{Sinv <-}\StringTok{ }\KeywordTok{solve}\NormalTok{(S)}
+
+\NormalTok{inRegion <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(mu, X.mean, Sinv, n, alpha)\{}
+\NormalTok{  critical.value <-}\StringTok{ }\NormalTok{(p}\OperatorTok{*}\NormalTok{(n}\DecValTok{-1}\NormalTok{))}\OperatorTok{/}\NormalTok{(n}\OperatorTok{-}\NormalTok{p)}\OperatorTok{*}\KeywordTok{qf}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{alpha,p,n}\OperatorTok{-}\NormalTok{p)}
+  \KeywordTok{return}\NormalTok{(n}\OperatorTok{*}\KeywordTok{t}\NormalTok{(X.mean}\OperatorTok{-}\NormalTok{mu)}\OperatorTok{%*%}\NormalTok{Sinv}\OperatorTok{%*%}\NormalTok{(X.mean}\OperatorTok{-}\NormalTok{mu) }\OperatorTok{>}\StringTok{ }\NormalTok{critical.value)}
+\NormalTok{\}}
+
+\KeywordTok{inRegion}\NormalTok{(}\DataTypeTok{mu=}\KeywordTok{matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\FloatTok{0.562}\NormalTok{,}\FloatTok{0.589}\NormalTok{),}
+                   \DataTypeTok{ncol=}\DecValTok{1}\NormalTok{),}
+         \DataTypeTok{X.mean=}\NormalTok{X.mean,}
+         \DataTypeTok{Sinv=}\NormalTok{Sinv,}
+         \DataTypeTok{n=}\NormalTok{n,}
+         \DataTypeTok{alpha=}\NormalTok{alpha)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       [,1]
+## [1,] FALSE
+\end{verbatim}
+
+Y graficamos la elipse respectiva:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(plotrix)}
+\NormalTok{angle <-}\StringTok{ }\KeywordTok{atan}\NormalTok{(}\KeywordTok{eigen}\NormalTok{(S)}\OperatorTok{$}\NormalTok{vectors[}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\KeywordTok{eigen}\NormalTok{(S)}\OperatorTok{$}\NormalTok{vectors[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{]) }
+\KeywordTok{plot}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DataTypeTok{pch=}\StringTok{''}\NormalTok{,}\DataTypeTok{ylab=}\StringTok{''}\NormalTok{,}\DataTypeTok{xlab=}\StringTok{''}\NormalTok{,}\DataTypeTok{xlim=}\KeywordTok{c}\NormalTok{(}\FloatTok{0.5}\NormalTok{,}\FloatTok{0.65}\NormalTok{),}\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\FloatTok{0.55}\NormalTok{,}\FloatTok{0.65}\NormalTok{))}
+\NormalTok{axis1 <-}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(}\KeywordTok{eigen}\NormalTok{(S)}\OperatorTok{$}\NormalTok{values[}\DecValTok{1}\NormalTok{])}\OperatorTok{*}
+\StringTok{  }\KeywordTok{sqrt}\NormalTok{(}
+\NormalTok{    (p}\OperatorTok{*}\NormalTok{(n}\DecValTok{-1}\NormalTok{))}\OperatorTok{/}
+\StringTok{      }\NormalTok{(n}\OperatorTok{*}\NormalTok{(n}\OperatorTok{-}\NormalTok{p))}\OperatorTok{*}\StringTok{ }\CommentTok{# no es el mismo valor critico que antes }
+\StringTok{      }\KeywordTok{qf}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{alpha,p,n}\OperatorTok{-}\NormalTok{p)) }
+\NormalTok{axis2 <-}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(}\KeywordTok{eigen}\NormalTok{(S)}\OperatorTok{$}\NormalTok{values[}\DecValTok{2}\NormalTok{])}\OperatorTok{*}
+\StringTok{  }\KeywordTok{sqrt}\NormalTok{((p}\OperatorTok{*}\NormalTok{(n}\DecValTok{-1}\NormalTok{))}\OperatorTok{/}\NormalTok{(n}\OperatorTok{*}\NormalTok{(n}\OperatorTok{-}\NormalTok{p))}\OperatorTok{*}\KeywordTok{qf}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{alpha,p,n}\OperatorTok{-}\NormalTok{p))}
+\NormalTok{lengths <-}\StringTok{ }\KeywordTok{c}\NormalTok{(axis1,axis2)}
+\KeywordTok{draw.ellipse}\NormalTok{(}\DataTypeTok{x=}\NormalTok{X.mean[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{],}\DataTypeTok{y=}\NormalTok{X.mean[}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{],}\DataTypeTok{a=}\NormalTok{lengths[}\DecValTok{1}\NormalTok{],}\DataTypeTok{b=}\NormalTok{lengths[}\DecValTok{2}\NormalTok{],}\DataTypeTok{angle=}\NormalTok{angle,}\DataTypeTok{deg=}\OtherTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EjemplosR_Inferencias_medias_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# sqrt(eigen(S)$values[1])/sqrt(eigen(S)$values[2])}
+\end{Highlighting}
+\end{Shaded}
+
+Ahora calculemos los intervalos de confianza simultaneos de \(T^2\) para
+las dos componentes de la media:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a1 <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{),}\DataTypeTok{ncol=}\DecValTok{1}\NormalTok{)}
+\NormalTok{a2 <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{),}\DataTypeTok{ncol=}\DecValTok{1}\NormalTok{)}
+
+\NormalTok{l1 <-}\StringTok{ }\NormalTok{X.mean[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{] }\OperatorTok{-}\StringTok{ }\KeywordTok{sqrt}\NormalTok{((p}\OperatorTok{*}\NormalTok{(n}\DecValTok{-1}\NormalTok{))}\OperatorTok{/}\NormalTok{(n}\OperatorTok{*}\NormalTok{(n}\OperatorTok{-}\NormalTok{p))}\OperatorTok{*}\KeywordTok{qf}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{alpha,p,n}\OperatorTok{-}\NormalTok{p)}\OperatorTok{*}\KeywordTok{t}\NormalTok{(a1)}\OperatorTok{%*%}\NormalTok{S}\OperatorTok{%*%}\NormalTok{a1)}
+\NormalTok{u1 <-}\StringTok{ }\NormalTok{X.mean[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{] }\OperatorTok{+}\StringTok{ }\KeywordTok{sqrt}\NormalTok{((p}\OperatorTok{*}\NormalTok{(n}\DecValTok{-1}\NormalTok{))}\OperatorTok{/}\NormalTok{(n}\OperatorTok{*}\NormalTok{(n}\OperatorTok{-}\NormalTok{p))}\OperatorTok{*}\KeywordTok{qf}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{alpha,p,n}\OperatorTok{-}\NormalTok{p)}\OperatorTok{*}\KeywordTok{t}\NormalTok{(a1)}\OperatorTok{%*%}\NormalTok{S}\OperatorTok{%*%}\NormalTok{a1)}
+
+\NormalTok{l2 <-}\StringTok{ }\NormalTok{X.mean[}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{] }\OperatorTok{-}\StringTok{ }\KeywordTok{sqrt}\NormalTok{((p}\OperatorTok{*}\NormalTok{(n}\DecValTok{-1}\NormalTok{))}\OperatorTok{/}\NormalTok{(n}\OperatorTok{*}\NormalTok{(n}\OperatorTok{-}\NormalTok{p))}\OperatorTok{*}\KeywordTok{qf}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{alpha,p,n}\OperatorTok{-}\NormalTok{p)}\OperatorTok{*}\KeywordTok{t}\NormalTok{(a2)}\OperatorTok{%*%}\NormalTok{S}\OperatorTok{%*%}\NormalTok{a2)}
+\NormalTok{u2 <-}\StringTok{ }\NormalTok{X.mean[}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{] }\OperatorTok{+}\StringTok{ }\KeywordTok{sqrt}\NormalTok{((p}\OperatorTok{*}\NormalTok{(n}\DecValTok{-1}\NormalTok{))}\OperatorTok{/}\NormalTok{(n}\OperatorTok{*}\NormalTok{(n}\OperatorTok{-}\NormalTok{p))}\OperatorTok{*}\KeywordTok{qf}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{alpha,p,n}\OperatorTok{-}\NormalTok{p)}\OperatorTok{*}\KeywordTok{t}\NormalTok{(a2)}\OperatorTok{%*%}\NormalTok{S}\OperatorTok{%*%}\NormalTok{a2)}
+
+\NormalTok{l1;u1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           [,1]
+## [1,] 0.5166803
+\end{verbatim}
+
+\begin{verbatim}
+##           [,1]
+## [1,] 0.6118347
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{l2;u2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           [,1]
+## [1,] 0.5550817
+\end{verbatim}
+
+\begin{verbatim}
+##           [,1]
+## [1,] 0.6508807
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DataTypeTok{pch=}\StringTok{''}\NormalTok{,}\DataTypeTok{ylab=}\StringTok{''}\NormalTok{,}\DataTypeTok{xlab=}\StringTok{''}\NormalTok{,}\DataTypeTok{xlim=}\KeywordTok{c}\NormalTok{(}\FloatTok{0.5}\NormalTok{,}\FloatTok{0.65}\NormalTok{),}\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\FloatTok{0.55}\NormalTok{,}\FloatTok{0.65}\NormalTok{))}
+\KeywordTok{draw.ellipse}\NormalTok{(}\DataTypeTok{x=}\NormalTok{X.mean[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{],}\DataTypeTok{y=}\NormalTok{X.mean[}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{],}\DataTypeTok{a=}\NormalTok{lengths[}\DecValTok{1}\NormalTok{],}\DataTypeTok{b=}\NormalTok{lengths[}\DecValTok{2}\NormalTok{],}\DataTypeTok{angle=}\NormalTok{angle,}\DataTypeTok{deg=}\OtherTok{FALSE}\NormalTok{)}
+
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v=}\NormalTok{l1,}\DataTypeTok{lty=}\DecValTok{3}\NormalTok{);}\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v=}\NormalTok{u1,}\DataTypeTok{lty=}\DecValTok{3}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{h=}\NormalTok{l2,}\DataTypeTok{lty=}\DecValTok{3}\NormalTok{);}\KeywordTok{abline}\NormalTok{(}\DataTypeTok{h=}\NormalTok{u2,}\DataTypeTok{lty=}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EjemplosR_Inferencias_medias_files/figure-latex/unnamed-chunk-9-1.pdf}
+Y los intervalos de Confianza de Bonferroni son:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{b <-}\StringTok{ }\DecValTok{2}
+\NormalTok{t.bonf <-}\StringTok{ }\KeywordTok{qt}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{alpha}\OperatorTok{/}\NormalTok{(}\DecValTok{2}\OperatorTok{*}\NormalTok{b),}\DataTypeTok{df=}\NormalTok{n}\DecValTok{-1}\NormalTok{)}
+
+\NormalTok{(l1b <-}\StringTok{ }\NormalTok{X.mean[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{t.bonf }\OperatorTok{*}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(S[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\NormalTok{n))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    closed 
+## 0.5212495
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(u1b <-}\StringTok{ }\NormalTok{X.mean[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{t.bonf }\OperatorTok{*}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(S[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\NormalTok{n))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    closed 
+## 0.6072655
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(l2b <-}\StringTok{ }\NormalTok{X.mean[}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{t.bonf }\OperatorTok{*}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(S[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\NormalTok{n))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      open 
+## 0.5596819
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(u2b <-}\StringTok{ }\NormalTok{X.mean[}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{t.bonf }\OperatorTok{*}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(S[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\NormalTok{n))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      open 
+## 0.6462806
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DataTypeTok{pch=}\StringTok{''}\NormalTok{,}\DataTypeTok{ylab=}\StringTok{''}\NormalTok{,}\DataTypeTok{xlab=}\StringTok{''}\NormalTok{,}\DataTypeTok{xlim=}\KeywordTok{c}\NormalTok{(}\FloatTok{0.5}\NormalTok{,}\FloatTok{0.65}\NormalTok{),}\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\FloatTok{0.55}\NormalTok{,}\FloatTok{0.65}\NormalTok{))}
+\KeywordTok{draw.ellipse}\NormalTok{(}\DataTypeTok{x=}\NormalTok{X.mean[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{],}\DataTypeTok{y=}\NormalTok{X.mean[}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{],}\DataTypeTok{a=}\NormalTok{lengths[}\DecValTok{1}\NormalTok{],}\DataTypeTok{b=}\NormalTok{lengths[}\DecValTok{2}\NormalTok{],}\DataTypeTok{angle=}\NormalTok{angle,}\DataTypeTok{deg=}\OtherTok{FALSE}\NormalTok{)}
+
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v=}\NormalTok{l1,}\DataTypeTok{lty=}\DecValTok{3}\NormalTok{);}\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v=}\NormalTok{u1,}\DataTypeTok{lty=}\DecValTok{3}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{h=}\NormalTok{l2,}\DataTypeTok{lty=}\DecValTok{3}\NormalTok{);}\KeywordTok{abline}\NormalTok{(}\DataTypeTok{h=}\NormalTok{u2,}\DataTypeTok{lty=}\DecValTok{3}\NormalTok{)}
+
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v=}\NormalTok{l1b,}\DataTypeTok{lty=}\DecValTok{2}\NormalTok{);}\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v=}\NormalTok{u1b,}\DataTypeTok{lty=}\DecValTok{2}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{h=}\NormalTok{l2b,}\DataTypeTok{lty=}\DecValTok{2}\NormalTok{);}\KeywordTok{abline}\NormalTok{(}\DataTypeTok{h=}\NormalTok{u2b,}\DataTypeTok{lty=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{EjemplosR_Inferencias_medias_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\end{document}

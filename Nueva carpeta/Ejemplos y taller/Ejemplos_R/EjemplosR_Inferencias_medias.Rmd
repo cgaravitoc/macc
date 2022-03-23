@@ -1,0 +1,197 @@
+---
+title: "Algunos Ejemplos de Inferencias sobre Medias"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+## Ejemplo 1
+
+```{r}
+rm(list=ls())
+
+X <- matrix(c(6,10,8,
+              9,6,3),byrow=FALSE,ncol=2)
+
+mu0 <- matrix(c(9,5),ncol=1)
+
+n <- nrow(X)
+p <- ncol(X)
+
+(X.mean <- t(matrix(1,ncol=n) %*% X)/n)
+
+(D <- X - matrix(1,nrow=n) %*% t(X.mean))
+
+(S <- (n-1)^(-1) * t(D)%*%D)
+
+Sinv <- solve(S)
+
+T2 <- n * t(X.mean-mu0) %*% Sinv %*% (X.mean-mu0)
+
+# T^2 esta distribuida como ((n-1)*p)/(n-p)*qf(1-alpha,p,n-p)
+
+(3-1)*2/(3-2)*qf(1-0.05,2,3-2)
+```
+
+
+
+## Ejemplo Sweat Data
+### Probando un vector medio multivariado con $T^{2}$
+Se analizó la transpiración de 20 mujeres sanas. Se midieron tres componentes, $X_{1} =$ tasa de sudoración, $X_{2}=$ contenido de sodio y $X_{3} =$ contenido de potasio, y se presentan los resultados (sweat dataset). 
+```{r}
+
+rm(list=ls())
+
+dat <- read.table("sweat.DAT")
+names(dat)[1] <- "Sweat rate"
+names(dat)[2] <- "Sodium"
+names(dat)[3] <- "Potassium"
+head(dat)
+```
+
+
+Pruebe la hipótesis $H_{0}: \boldsymbol {\mu} ^ {\prime} = [4,50,10]$ contra $H_{1}: \boldsymbol {\mu} ^ {\prime} \neq [4,50,10]$ al nivel de
+significancia $\alpha = .10$.
+
+
+Para una prueba de la hipótesis $H_{0}: \boldsymbol {\mu} = \boldsymbol {\mu} _{0}$ versus $H_{1}: \boldsymbol { \mu} \neq \boldsymbol {\mu} _{0}.$ En el nivel de significancia $\alpha$, rechazamos $H_{0}$ a favor de $H_{1}$ si el
+$$
+T ^ {2} = n \left (\overline {\mathbf {x}} - \boldsymbol {\mu} _{0} \right) ^ {\prime} \mathbf {S} ^ {- 1} \left (\overline {\mathbf {x}} - \boldsymbol {\mu} _{0} \right)> \frac {(n-1) p} {(np)} F_{p, np} (\alpha)
+$$
+Primero determinamos el estadístico $T^2$:
+```{r}
+
+X <- as.matrix(dat)
+n <- nrow(X)
+p <- ncol(X)
+X.mean <- t(matrix(1,ncol=n) %*% X)/n
+D <- X - matrix(1,nrow=n) %*% t(X.mean)
+S <- (n-1)^(-1) * t(D)%*%D
+Sinv <- solve(S)
+
+mu = c(4,50,10)
+
+(T2 = n*t(X.mean-mu)%*%Sinv%*%(X.mean-mu))
+```
+
+Y luego calculamos el valor crítico:
+```{r}
+alpha <- 0.1 # Nivel de significancia
+
+(critical.value <- (p*(n-1))/(n-p)*qf(1-alpha,p,n-p))
+
+```
+Y comprobamos si el estadístico es mayor o menor que el valor crítico:
+
+```{r}
+(T2 > critical.value)
+
+```
+
+Y por lo tanto al nivel de un $\alpha=0.1$ rechazamos la hipótesis nula.
+
+## Ejemplo de Radiación
+
+El gobierno federal requiere que el departamento de control de calidad de un fabricante de hornos microondas controle la cantidad de radiación emitida cuando las puertas de los hornos están cerradas. Se realizaron observaciones de la radiación emitida a través de puertas cerradas de $n = 42$ en hornos seleccionados al azar.Las mediciones de radiación también se registraron a través de las puertas abiertas de los hornos microondas.
+
+Leemos los datos
+```{r}
+rm(list=ls())
+
+alpha <- 0.05
+
+dat.closed <- read.table("closed.DAT") # Door closed
+dat.open <- read.table("open.DAT") # Door Open
+dat <- data.frame(closed=dat.closed[,1]^.25, 
+                  open=dat.open[,1]^.25)
+
+head(dat)
+
+```
+
+Realizamos la inferencia para una prueba de hipótesis de que la media es $\mu=(0.562,0.589)$
+```{r}
+X <- as.matrix(dat)
+n <- nrow(X)
+p <- ncol(X)
+X.mean <- t(matrix(1,ncol=n) %*% X)/n
+D <- X - matrix(1,nrow=n) %*% t(X.mean)
+S <- (n-1)^(-1) * t(D)%*%D
+Sinv <- solve(S)
+
+inRegion <- function(mu, X.mean, Sinv, n, alpha){
+  critical.value <- (p*(n-1))/(n-p)*qf(1-alpha,p,n-p)
+  return(n*t(X.mean-mu)%*%Sinv%*%(X.mean-mu) > critical.value)
+}
+
+inRegion(mu=matrix(c(0.562,0.589),
+                   ncol=1),
+         X.mean=X.mean,
+         Sinv=Sinv,
+         n=n,
+         alpha=alpha)
+
+```
+
+Y graficamos la elipse respectiva:
+
+```{r}
+library(plotrix)
+angle <- atan(eigen(S)$vectors[2,1]/eigen(S)$vectors[1,1]) 
+plot(0,pch='',ylab='',xlab='',xlim=c(0.5,0.65),ylim=c(0.55,0.65))
+axis1 <- sqrt(eigen(S)$values[1])*
+  sqrt(
+    (p*(n-1))/
+      (n*(n-p))* # no es el mismo valor critico que antes 
+      qf(1-alpha,p,n-p)) 
+axis2 <- sqrt(eigen(S)$values[2])*
+  sqrt((p*(n-1))/(n*(n-p))*qf(1-alpha,p,n-p))
+lengths <- c(axis1,axis2)
+draw.ellipse(x=X.mean[1,1],y=X.mean[2,1],a=lengths[1],b=lengths[2],angle=angle,deg=FALSE)
+
+# sqrt(eigen(S)$values[1])/sqrt(eigen(S)$values[2])
+```
+
+Ahora calculemos los intervalos de confianza simultaneos de $T^2$ para las dos componentes de la media:
+```{r}
+a1 <- matrix(c(1,0),ncol=1)
+a2 <- matrix(c(0,1),ncol=1)
+
+l1 <- X.mean[1,1] - sqrt((p*(n-1))/(n*(n-p))*qf(1-alpha,p,n-p)*t(a1)%*%S%*%a1)
+u1 <- X.mean[1,1] + sqrt((p*(n-1))/(n*(n-p))*qf(1-alpha,p,n-p)*t(a1)%*%S%*%a1)
+
+l2 <- X.mean[2,1] - sqrt((p*(n-1))/(n*(n-p))*qf(1-alpha,p,n-p)*t(a2)%*%S%*%a2)
+u2 <- X.mean[2,1] + sqrt((p*(n-1))/(n*(n-p))*qf(1-alpha,p,n-p)*t(a2)%*%S%*%a2)
+
+l1;u1
+l2;u2
+
+plot(0,pch='',ylab='',xlab='',xlim=c(0.5,0.65),ylim=c(0.55,0.65))
+draw.ellipse(x=X.mean[1,1],y=X.mean[2,1],a=lengths[1],b=lengths[2],angle=angle,deg=FALSE)
+
+abline(v=l1,lty=3);abline(v=u1,lty=3)
+abline(h=l2,lty=3);abline(h=u2,lty=3)
+```
+Y los intervalos de Confianza de Bonferroni son:
+
+```{r}
+b <- 2
+t.bonf <- qt(1-alpha/(2*b),df=n-1)
+
+(l1b <- X.mean[1,1] - t.bonf * sqrt(S[1,1]/n))
+(u1b <- X.mean[1,1] + t.bonf * sqrt(S[1,1]/n))
+(l2b <- X.mean[2,1] - t.bonf * sqrt(S[2,2]/n))
+(u2b <- X.mean[2,1] + t.bonf * sqrt(S[2,2]/n))
+
+
+plot(0,pch='',ylab='',xlab='',xlim=c(0.5,0.65),ylim=c(0.55,0.65))
+draw.ellipse(x=X.mean[1,1],y=X.mean[2,1],a=lengths[1],b=lengths[2],angle=angle,deg=FALSE)
+
+abline(v=l1,lty=3);abline(v=u1,lty=3)
+abline(h=l2,lty=3);abline(h=u2,lty=3)
+
+abline(v=l1b,lty=2);abline(v=u1b,lty=2)
+abline(h=l2b,lty=2);abline(h=u2b,lty=2)
+
+```
+
