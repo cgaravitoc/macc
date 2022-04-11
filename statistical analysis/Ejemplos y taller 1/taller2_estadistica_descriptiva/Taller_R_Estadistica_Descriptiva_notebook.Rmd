@@ -103,13 +103,19 @@ Las distribuciones de frecuencias se pueden presentar en tablas como las anterio
 
 Es una herramienta que presenta una tabla de datos en un formato gráfico para ayudar a visualizar la forma de la distribución. Es una tabla donde cada dato es dividido según su valor, en un tallo y una hoja. El último dígito del dato representa la hoja, y el resto de dígitos representan el tallo. Este tipo de gráficos otorgan información sobre la localización, dispersión y valores extremos de nuestros datos. El gráfico de tallos y hojas se calcula en R mediante la función `stem()`. La longitud del gráfico se puede modificar utilizando el atributo `scale= `, donde 1 es valor por defecto, 2 produce un gráfico aproximadamente el doble de largo, etc. El gráfico del ejemplo 2 se genera de la siguiente forma:
 ```{r}
-stem(datos_2,scale=2)
+stem(datos_2,scale=1)
 ```
 
 ### 2.2.2 Gráfico de puntos
 Cuando se tiene un tabla de frecuencias pequeña de variables categóricas y los valores no distan mucho entre sí, es una atractiva forma de representar los datos obtenidos. En este gráfico el eje horizontal representa los posibles valores de los datos y el eje vertical corresponde a la localización de cada dato dentro de la lista. Cada dato se representa con un punto y se coloca encima del valor que le corresponda y a una altura proporcional al orden que tiene en el conjunto. En ejemplo 1, el primer dato (1) se representa por un punto en la posición (1,1), el segundo dato (5), por un punto en la posición (5,2), el tercero que es 3, en la posición (3,3), el cuarto que es 1, en (1,4) y así respectivamente. El gráfico de puntos se genera con el comando `dotchart()` tal como se muestra a continuación.
 ```{r}
-dotchart(datos_1)
+datos_1
+```
+
+
+```{r}
+datos_3 = c('pedro', 'pedro','pedro','pedro','juan','juan','juan', 'maria', 'jose' ) # prueba barplot variables categoricas
+barplot(table(datos_3))
 ```
 
 ### 2.2.3 Gráfico de barras
@@ -144,7 +150,7 @@ h1 = hist(datos_2,breaks=new_breaks)
 ```
 
 ```{r}
-h2=hist(datos_2,breaks = 3)
+h2=hist(datos_2,breaks = 5)
 ```
 
 ### 2.2.5 Gráfico de sectores
@@ -263,6 +269,12 @@ max(datos_1)-min(datos_1)
 ```{r}
 max(datos_2)-min(datos_2)
 ```
+
+```{r}
+range(datos_1)
+```
+
+
 ```{r}
 diff(range(datos_1))
 ```
@@ -298,7 +310,8 @@ Los diagramas de caja son una presentación visual que describe varias caracter�
 
 `boxplot()` es la función que se utiliza para la creación del gráfico. Tal cual como con el histograma, si se guarda el gráfico de caja en un objeto `h = boxplot()`, éste objeto contiene información como los límites para considerar los valores atípicos, cuáles son esos valores atípicos, los cuartiles, etc.
 ```{r}
-bp=boxplot(datos_2); bp
+bp=boxplot(datos_2);
+bp
 ```
 
 ***
@@ -328,15 +341,35 @@ sort(dado)
 ```{r}
 # Coloque la solucion aqui
 
+dado_a = cut(dado, breaks = 3 , right = FALSE)
 
+
+ni = table(dado_a) # frecuencia absoluta
+fi = table(dado_a) / length(dado_a) # frecuencia relativa
+Ni = cumsum(ni) # frecuencia abosoluta acumulada
+Fi = cumsum(fi) # frecuencia relativa acumulada
+tabla_frec_ejercicio = cbind(ni, Ni, fi, Fi)
+tabla_frec_ejercicio
 ```
 
 2.  Realice un diagrama de barras de la tabla de frecuencias, un diagrama de sectores, diagrama de caja, y histograma del vector **dado**. Ubique las dos primeras gráficas en la misma figura usando la función `par()` usando el parámetro `mfrow`. Use *chunks* separados para cada gráfica.
 
 ```{r}
 # Coloque la solucion aqui
+par(mfrow = c(1,2))
+
+barp = barplot(ni)
+piep = pie(ni)
+```
 
 
+```{r}
+boxp = boxplot(dado)
+```
+
+
+```{r}
+hist = hist(dado, breaks= 3)
 ```
 
 3. Calcular la media, mediana, moda (¿Hay varias?), cuartiles, percentiles 25% y 60%, y rango intercuartílico del vector **dado**.
@@ -344,7 +377,13 @@ sort(dado)
 ```{r}
 # Coloque la solucion aqui
 
+# Ejecutar solo la primera vez
+install.packages("modes")
+```
 
+```{r}
+library(modes)
+modes(dado)
 ```
 
 4. Realice un "resumen" estadístico del vector *dado*.
