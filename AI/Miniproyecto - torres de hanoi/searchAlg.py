@@ -1,3 +1,4 @@
+from ast import Raise
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -56,6 +57,7 @@ def depth_limited_search(prob, l):
         
         if depth(nodo) >= l: 
             resultado = "cutoff"
+            #raise Exception("cutoff")
 
         elif not is_cycle(nodo): 
             for hijo in Expand(prob, nodo):
