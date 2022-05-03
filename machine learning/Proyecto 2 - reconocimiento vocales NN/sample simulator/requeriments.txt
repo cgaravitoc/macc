@@ -1,0 +1,6 @@
+librosa==0.8.1
+matplotlib
+numpy>1.18.0 
+gtts==2.2.4
+ffmpeg
+playsound
