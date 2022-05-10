@@ -1,9 +1,4 @@
-CURRENT_PATH = os.getcwd()
-SAMPLES_PATH = os.path.join(CURRENT_PATH, os.path.pardir, 'database')
-CSV_PATH = os.path.join(CURRENT_PATH, os.path.pardir, 'csv')
-MODELS_PATH = os.path.join(CURRENT_PATH, os.path.pardir, 'models')
-NEWSAMPLES_PATH = os.path.join(CURRENT_PATH, os.path.pardir, 'new_samples')
-PYTHON_PATH = os.path.join(CURRENT_PATH, os.path.pardir, 'python')
+
 
 import librosa
 import pandas as pd
@@ -28,6 +23,13 @@ import librosa
 import soundfile 
 import csv
 
+CURRENT_PATH = os.getcwd()
+SAMPLES_PATH = os.path.join(CURRENT_PATH, os.path.pardir, 'database')
+CSV_PATH = os.path.join(CURRENT_PATH, os.path.pardir, 'csv')
+MODELS_PATH = os.path.join(CURRENT_PATH, os.path.pardir, 'models')
+NEWSAMPLES_PATH = os.path.join(CURRENT_PATH, os.path.pardir, 'new_samples')
+PYTHON_PATH = os.path.join(CURRENT_PATH, os.path.pardir, 'python')
+
 import sys
 sys.path.insert(1, PYTHON_PATH)
 
@@ -37,17 +39,17 @@ import vowel_classifier as vc
 import warnings
 warnings.filterwarnings('ignore')
 
-
 class my_vowelClassifier:
 
     def __init__(self, CSV_PATH, NEWSAMPLES_PATH, MODELS_PATH):
         '''
-        Crea la instancia para la red neuronal
+        Crea la instancia del clasificador de audios de vocales
 
         Parámetros
         ----------
         CSV_PATH: ruta de trabajo para guardar archivos csv
         NEWSAMPLES_PATH: ruta de trabajo para leer las muestras de audio
+        MODELS_PATH: ruta en donde están almacenadas las muestas de audio
         '''
         self.CSV_PATH = CSV_PATH
         self.NEWSAMPLES_PATH = NEWSAMPLES_PATH
@@ -60,11 +62,13 @@ class my_vowelClassifier:
         loaded_model = model_from_json(loaded_model_json)
         # load weights into new model
         loaded_model.load_weights(os.path.join(MODELS_PATH, "model.h5"))
+        self.loaded_model = loaded_model
         print("Loaded model from disk")
+        
 
     def csv_creator(self, dataset_NEW):
         '''
-        Crea el archivo csv con los datos de entrada para la red nueronal
+        Crea el archivo csv que contiene las carácterísticas de cada audio, que alimenta a la red nueronal
 
         Parámetros
         ----------
@@ -110,7 +114,7 @@ class my_vowelClassifier:
                 writer.writerow(to_append.split())
         return self
     
-    def read_myData(self):
+    def read_myData(self,):
         '''
         Lee el archivo csv. 
 
@@ -119,8 +123,8 @@ class my_vowelClassifier:
 
         Returns
         -------
-        X_new: datafrane de datos acondicionados del csv para la entrada de la red neuronal
-        new_data: datafrane de datos del csv
+        X_new: dataframe de datos normalizados  del csv para la entrada de la red neuronal
+        new_data: dataframe de datos de caracteristicas de los audios de la muestra del csv
         '''
         scaler = StandardScaler()
         new_data = pd.read_csv(os.path.join(self.CSV_PATH, 'dataset_NEW.csv'))
@@ -129,30 +133,32 @@ class my_vowelClassifier:
 
         return X_new, new_data
 
-    def my_prediction(self, loaded_model, X_new, new_data): 
+    def my_prediction(self, X_new, new_data): 
         '''
-        Hace la clasificación del sonido. 
+        Hace la clasificación de las muestras de audio. 
 
         Parámetros
         ----------
-        loaded_model: 
-        X_new: 
-        encoder: 
-        new_data: 
+        X_new: dataframe de datos normalizados  del csv para la entrada de la red neuronal
+        new_data: dataframe de datos de caracteristicas de los audios de la muestra del csv
 
         Returns
         -------
         prediction: Dataframe que compara el nombre de la muestra con la clasificación realizada por la red.
 
         '''
-        y_encoder = np.load(os.path.join(MODELS_PATH, 'y_encoder.npy'))
-
         new_sample = new_data.iloc[:, -1]
 
-        predict_xnew = loaded_model.predict(X_new) 
+        predict_xnew = self.loaded_model.predict(X_new) 
         classes_xnew = np.argmax(predict_xnew,axis=1)
+        
+        # asigna clase a vocal
+        classes_xnew = np.where(classes_xnew == 0, "a", classes_xnew) 
+        classes_xnew = np.where(classes_xnew == "1", "e", classes_xnew) 
+        classes_xnew = np.where(classes_xnew == "2", "i", classes_xnew) 
+        classes_xnew = np.where(classes_xnew == "3", "o", classes_xnew) 
+        classes_xnew = np.where(classes_xnew == "4", "u", classes_xnew)
 
-        pred_str = y_encoder.inverse_transform(classes_xnew)
-        prediction = pd.DataFrame(zip(new_sample, pred_str), columns=["new_sample", "prediction"])
+        prediction = pd.DataFrame(zip(new_sample, classes_xnew), columns=["new_sample", "prediction"])
 
         return prediction
