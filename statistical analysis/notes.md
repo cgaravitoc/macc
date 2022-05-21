@@ -27,5 +27,8 @@
 to render latex in github's md files: `<img src="https://render.githubusercontent.com/render/math?math=e^{i \pi} = -1">`
 <img src="https://render.githubusercontent.com/render/math?math=e^{i \pi} = -1">
 
+## RStudio
+- [R and RStudio tutorial](https://repositorio.fedepalma.org/bitstream/handle/123456789/141281/Manual%20REstudio%20IMw.pdf?sequence=6)
+
 
 
