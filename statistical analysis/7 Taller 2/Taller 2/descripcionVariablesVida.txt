@@ -1,0 +1,22 @@
+country (Nominal) - the country in which the indicators are from (i.e. United States of America or Congo)
+year (Ordinal) - the calendar year the indicators are from (ranging from 2000 to 2015)
+status (Nominal) - whether a country is considered to be 'Developing' or 'Developed' by WHO standards
+life_expectancy (Ratio) - the life expectancy of people in years for a particular country and year
+adult_mortality (Ratio) - the adult mortality rate per 1000 population (i.e. number of people dying between 15 and 60 years per 1000 population); if the rate is 263 then that means 263 people will die out of 1000 between the ages of 15 and 60; another way to think of this is that the chance an individual will die between 15 and 60 is 26.3%
+infant_deaths (Ratio) - number of infant deaths per 1000 population; similar to above, but for infants
+alcohol (Ratio) - a country's alcohol consumption rate measured as liters of pure alcohol consumption per capita
+percentage_expenditure (Ratio) - expenditure on health as a percentage of Gross Domestic Product (gdp)
+hepatitis_b (Ratio) - number of 1 year olds with Hepatitis B immunization over all 1 year olds in population
+measles (Ratio) - number of reported Measles cases per 1000 population
+bmi (Interval/Ordinal) - average Body Mass Index (BMI) of a country's total population
+under-five_deaths (Ratio) - number of people under the age of five deaths per 1000 population
+polio (Ratio) - number of 1 year olds with Polio immunization over the number of all 1 year olds in population
+total_expenditure (Ratio) - government expenditure on health as a percentage of total government expenditure
+diphtheria (Ratio) - Diphtheria tetanus toxoid and pertussis (DTP3) immunization rate of 1 year olds
+hiv/aids (Ratio) - deaths per 1000 live births caused by HIV/AIDS for people under 5; number of people under 5 who die due to HIV/AIDS per 1000 births
+gdp (Ratio) - Gross Domestic Product per capita
+population (Ratio) - population of a country
+thinness_1-19_years (Ratio) - rate of thinness among people aged 10-19 (Note: variable should be renamed to thinness_10-19_years to more accurately represent the variable)
+thinness_5-9_years (Ratio) - rate of thinness among people aged 5-9
+income_composition_of_resources (Ratio) - Human Development Index in terms of income composition of resources (index ranging from 0 to 1)
+schooling (Ratio) - average number of years of schooling of a population

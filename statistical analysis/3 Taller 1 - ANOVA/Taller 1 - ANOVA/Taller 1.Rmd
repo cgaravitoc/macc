@@ -1,0 +1,356 @@
+---
+title: "Taller - 1 ANOVA"
+author: "Tomas Montealegre"
+date: '2022-05-18'
+output: pdf_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r}
+library(ggplot2)
+library(readr)
+library(nortest)
+```
+
+# Taller 1 - ANOVA
+
+-   Tomas Montealegre
+
+## Punto 1
+
+Los miembros de un equipo de fútbol se dividen al azar en tres grupos
+que realizan su plan de entrenamiento con métodos diferentes para
+mejorar su rendimiento físico. El primer grupo entrena con sesiones
+largas de carrera de resistencia, el segundo grupo se entrena series
+cortas de alta intensidad y el tercero hace trabajo de fuerza en el
+gimnasio. Después de dos meses de entrenamiento se realiza un test de
+rendimiento en carrera de 3km. Los tiempos de cada grupo fueron los
+siguientes:
+
+| Metodo 1 | Metodo 2 | Metodo 3 |
+|:--------:|:--------:|:--------:|
+|    15    |    14    |    13    |
+|    16    |    13    |    12    |
+|    14    |    15    |    11    |
+|    15    |    16    |    14    |
+|    17    |    14    |    11    |
+
+A un nivel de confianza del 95% ¿Puede considerarse que los tres métodos
+producen resultados equivalentes?
+
+### Suma de cuadrados
+
+#### Paso 0
+
+Creación de variables
+
+```{r}
+metodo_1 <- c(15, 16, 14, 15, 17)
+metodo_2 <- c(14, 13, 15, 16, 14)
+metodo_3 <- c(13, 12, 11, 14, 11)
+obs <- c(metodo_1, metodo_2, metodo_3)
+num_g <- 3
+```
+
+#### Paso 1
+
+Calculo de sumas por grupo y total.
+
+```{r}
+sum_1 <- sum(metodo_1)
+sum_2 <- sum(metodo_2)
+sum_3 <- sum(metodo_3)
+sum_T <- sum_1 + sum_2 + sum_3 #T
+```
+
+#### Paso 2
+
+Calculo de la suma total al cuadrado sobre el numero de obvservaciones.
+
+```{r}
+sum_Tcn <- (sum_T^2)/length(obs) #T^2/n
+```
+
+#### Paso 3
+
+Calculo de la suma por grupo al cuadrado sobre el numero de obvservaciones y suma total de estos.
+
+```{r}
+#sum 1
+sum_1cn <- (sum_1^2)/length(metodo_1)
+#sum 2
+sum_2cn <- (sum_2^2)/length(metodo_2)
+#sum 3
+sum_3cn <- (sum_3^2)/length(metodo_3)
+#suma total
+sum_tcn <- sum_1cn + sum_2cn + sum_3cn
+```
+
+#### Paso 4
+
+Calculo de sumas cuadradas por grupo y suma total de estas.
+
+```{r}
+# Metodo 1
+sum_c1 <- 0
+for (i in metodo_1){
+  sum_c1 = sum_c1 + (i^2)
+}
+# Metodo 2
+sum_c2 <- 0
+for (i in metodo_2){
+  sum_c2 = sum_c2 + (i^2)
+}
+# Metodo 3
+sum_c3 <- 0
+for (i in metodo_3){
+  sum_c3 = sum_c3 + (i^2)
+}
+# Total
+sum_ct <- sum_c1 + sum_c2 + sum_c3
+```
+
+#### Paso 5
+
+Calculo de las sumas cuadradas total, de tratamientos y de error
+muestral.
+
+```{r}
+SST <- sum_ct - sum_Tcn #SST: Suma cuadrada total.
+SStr <- sum_tcn - sum_Tcn #SStr: Suma cuadrada tratamientos.
+SSE <- SST - SStr #SSE: Suma cuadrada error muestral.
+```
+
+#### Paso 6
+
+Calculo de las medias cuadradas de tratamientos y de error muestral.
+
+```{r}
+MStr <- SStr/(num_g - 1) #MStr: Media cuadrada tratamientos.
+MSE <- SSE/(length(obs)-num_g) #MSE: Media cuadrada error muestral.
+```
+
+#### Paso 7
+
+Calculo de F.
+
+```{r}
+f <- MStr/MSE
+f
+```
+
+### Librerias
+
+```{r}
+tiempo <- c(15, 16, 14, 15, 17, 14, 13, 15, 16, 14, 13, 12, 11, 14, 11)
+metodo <- c("metodo_1", "metodo_1", "metodo_1", "metodo_1", "metodo_1", "metodo_2", "metodo_2", "metodo_2", "metodo_2", "metodo_2", "metodo_3", "metodo_3", "metodo_3", "metodo_3", "metodo_3")
+
+datos <- data.frame(metodo = metodo, tiempo = tiempo)
+```
+
+```{r}
+anova <- aov(datos$tiempo ~ datos$metodo)
+summary(anova)
+```
+
+### Test de hipótesis
+
+El valor de F teórica en (2,12) es de 3.89 y el valor obtenido es de 9.348837, por lo tanto se rechaza la hipótesis nula de que los tres métodos producen resultados equivalentes y se puede afirmar a un nivel de confianza del 95% que existe al menos un método que produce resultados diferentes a los del los demás.
+
+Mediante librerias el p-valor es igual a 0.00357 que es menor a 0.05 por lo tanto se rechaza la hipotesis nula.
+
+## Punto 2
+
+El dataset "students" consiste en las calificaciones obtenidas por los estudiantes en varias materias. Se recogieron las siguientes variables:
+
+-   Gender: Sexo del estudiante
+-   Race/ethnicity: Etnia del estudiante
+-   Parental level of education: Nivel de educaci´on del padre y la
+    madre
+-   Lunch: Tipo de almuerzo
+-   Test preparation course: Curso de preparaci´on completado o no
+    completado
+-   Nota de matemáticas
+-   Nota de lectura
+-   Nota de escritura
+
+### Cargar dataset
+
+```{r results='hide'}
+students <- read_csv("D:/001_Maestria/Semestre_01/Estadistica/Talleres/Taller 1 - ANOVA/students.csv")
+```
+
+Utilizando el dataset de "students" se quiere contestar a las siguientes
+preguntas:
+
+### Pregunta 1
+
+¿Hay diferencias significativas en la nota media de matemáticas entre hombres y mujeres?
+
+#### Matemáticas
+
+Comenzamos con la validación de las condiciones de normalidad y homocedasticidad.
+
+##### Normalidad de los datos
+
+```{r}
+lillie.test(students$`math score`[students$gender=='male'])
+lillie.test(students$`math score`[students$gender=='female'])
+```
+Los datos de la categoría “female” presentan un p-valor de 0.02107 < 0.05, no se confirma la normalidad de los datos.
+
+Se grafican los datos en un boxplot en búsqueda de outliners.
+
+```{r}
+ggplot(data = students, aes(x = gender, y = `math score`, color = gender)) +
+    geom_boxplot() + theme_bw()
+```
+
+Se identifican como outliners los datos < 25 y se eliminan 7 datos.
+
+```{r}
+students_hm<-students[students$`math score`>=25,]
+```
+
+Se realizan la prueba de normalidad despues de quitar los outliners
+
+```{r}
+lillie.test(students_hm$`math score`[students_hm$gender=='male'])
+lillie.test(students_hm$`math score`[students_hm$gender=='female'])
+```
+Se valida normalidad en los datos, p-valor > 0.05.
+
+##### Homocedasticidad (varianza constante entre grupos)
+
+```{r}
+fligner.test(students_hm$`math score` ~ students_hm$gender,students)
+```
+Se valida homocedasticidad en los datos, p-valor > 0.05.
+
+##### ANOVA
+
+Se realiza el análisis ANOVA después de validar que las condiciones se cumplan.
+
+```{r}
+anova_hm <- aov(students_hm$`math score` ~ students_hm$gender)
+summary(anova_hm)
+```
+p-valor 1.45e-06 < 0.05, por lo tanto se rechaza la hipotesis nula, se afirma que hay diferencias significativas en la nota media de matemáticas entre hombres y mujeres.
+
+### Pregunta 2
+
+¿Hay diferencias significativas en la media para alguna de las notas (individualmente) entre el nivel de educación parental?
+
+#### Matemáticas
+
+##### Normalidad de los datos
+
+```{r}
+lillie.test(students$`math score`[students$`parental level of education`=="master's degree"])
+lillie.test(students$`math score`[students$`parental level of education`=="bachelor's degree"])
+lillie.test(students$`math score`[students$`parental level of education`=="associate's degree"])
+lillie.test(students$`math score`[students$`parental level of education`=='some college'])
+lillie.test(students$`math score`[students$`parental level of education`=='high school'])
+lillie.test(students$`math score`[students$`parental level of education`=='some high school'])
+```
+
+```{r}
+ggplot(data = students, aes(x = `parental level of education`, y = `math score`, color = `parental level of education`)) +
+    geom_boxplot() + theme_bw()
+```
+```{r}
+students_math<-students[students$`math score`>=30,]
+```
+
+```{r}
+lillie.test(students_math$`math score`[students_math$`parental level of education`=="master's degree"])
+lillie.test(students_math$`math score`[students_math$`parental level of education`=="bachelor's degree"])
+lillie.test(students_math$`math score`[students_math$`parental level of education`=="associate's degree"])
+lillie.test(students_math$`math score`[students_math$`parental level of education`=='some college'])
+lillie.test(students_math$`math score`[students_math$`parental level of education`=='high school'])
+lillie.test(students_math$`math score`[students_math$`parental level of education`=='some high school'])
+```
+
+##### Homocedasticidad (varianza constante entre grupos)
+
+```{r}
+fligner.test(students$`math score` ~ students$`parental level of education`,students)
+```
+
+##### ANOVA
+
+```{r}
+anova_hm <- aov(students$`math score` ~ students$`parental level of education`)
+summary(anova_hm)
+```
+
+#### Lectura
+
+##### Normalidad de los datos
+
+```{r}
+lillie.test(students$`reading score`[students$`parental level of education`=="master's degree"])
+lillie.test(students$`reading score`[students$`parental level of education`=="bachelor's degree"])
+lillie.test(students$`reading score`[students$`parental level of education`=="associate's degree"])
+lillie.test(students$`reading score`[students$`parental level of education`=='some college'])
+lillie.test(students$`reading score`[students$`parental level of education`=='high school'])
+lillie.test(students$`reading score`[students$`parental level of education`=='some high school'])
+```
+
+##### Homocedasticidad (varianza constante entre grupos)
+
+```{r}
+fligner.test(students$`reading score` ~ students$`parental level of education`,students)
+```
+
+##### ANOVA
+
+```{r}
+anova_hm <- aov(students$`reading score` ~ students$`parental level of education`)
+summary(anova_hm)
+```
+
+#### Escritura
+
+##### Normalidad de los datos
+
+```{r}
+lillie.test(students$`writing score`[students$`parental level of education`=="master's degree"])
+lillie.test(students$`writing score`[students$`parental level of education`=="bachelor's degree"])
+lillie.test(students$`writing score`[students$`parental level of education`=="associate's degree"])
+lillie.test(students$`writing score`[students$`parental level of education`=='some college'])
+lillie.test(students$`writing score`[students$`parental level of education`=='high school'])
+lillie.test(students$`writing score`[students$`parental level of education`=='some high school'])
+```
+
+```{r}
+ggplot(data = students, aes(x = `parental level of education`, y = `writing score`, color = `parental level of education`)) +
+    geom_boxplot() + theme_bw()
+```
+```{r}
+students_writing<-students[students$`writing score`>=30,]
+```
+
+```{r}
+lillie.test(students_writing$`writing score`[students_writing$`parental level of education`=="master's degree"])
+lillie.test(students_writing$`writing score`[students_writing$`parental level of education`=="bachelor's degree"])
+lillie.test(students_writing$`writing score`[students_writing$`parental level of education`=="associate's degree"])
+lillie.test(students_writing$`writing score`[students_writing$`parental level of education`=='some college'])
+lillie.test(students_writing$`writing score`[students_writing$`parental level of education`=='high school'])
+lillie.test(students_writing$`writing score`[students_writing$`parental level of education`=='some high school'])
+```
+
+##### Homocedasticidad (varianza constante entre grupos)
+
+```{r}
+fligner.test(students$`writing score` ~ students$`parental level of education`,students)
+```
+
+##### ANOVA
+
+```{r}
+anova_hm <- aov(students$`writing score` ~ students$`parental level of education`)
+summary(anova_hm)
+```
