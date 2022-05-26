@@ -1,5 +1,4 @@
 import numpy as np
-from copy import deepcopy
 
 class Descriptor :
 
@@ -116,60 +115,11 @@ class LPQuery:
             	atomo = clausula.cabeza
             if atomo not in self.atomos:
             	self.atomos.append(atomo)
-        else:
-            for literal in formula.split('Y'):
-                if literal not in self.datos:
-                    self.datos.append(literal)
-                    if '-' in literal:
-                    	atomo = literal[1:]
-                    else:
-                    	atomo = literal
-                    if literal not in self.atomos:
-                    	self.atomos.append(literal)
-
-def pl_fc_entails(base, q) :
-    count = {}
-    for regla in base.reglas:
-        count[regla.nombre] = len(regla.cuerpo)
-    inferred = dict(zip(base.atomos, [False]*len(base.atomos)))
-    queue = deepcopy(base.datos)
-    while len(queue) > 0:
-        p = queue.pop()
-        if p == q:
-            return True
-        elif inferred[p] == False:
-            inferred[p] = True
-            for regla in base.reglas:
-                if p in regla.cuerpo:
-                    count[regla.nombre] -= 1
-                    if count[regla.nombre] == 0:
-                        queue.append(regla.cabeza)
-    return False
-
-def and_or_graph_search(objetivo, base):
-    return or_search(objetivo, base, [])
-
-def or_search(head, base, camino):
-    if base.test_objetivo(head):
-        return 'success'
-    elif head in camino:
-        return 'failure'
-    reglas = base.reglas_aplicables(head)
-    if not reglas:
-        return 'failure'
-    for regla in reglas:
-        plan = and_search(regla.cuerpo, base, [head] + camino)
-        if plan != 'failure':
-            return 'success'
-    return 'failure'
-
-def and_search(literales, base, camino):
-    for literal in literales:
-        plan = or_search(literal, base, camino)
-        if plan == 'failure':
-            return 'failure'
-    return 'success'
-
-def ASK(objetivo, valor, base):
-    ask = and_or_graph_search(objetivo, base)
-    return (ask == valor)
+        elif formula not in self.datos:
+            self.datos.append(formula)
+            if '-' in formula:
+            	atomo = formula[1:]
+            else:
+            	atomo = formula
+            if atomo not in self.atomos:
+            	self.atomos.append(atomo)
