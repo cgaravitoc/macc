@@ -69,7 +69,7 @@ class Laberinto:
 		offsetY = 0.04
 		#Poniendo salida
 		X, Y = (0,0)
-		arr_img = plt.imread("./imagenes/Laberinto/salida.png", format='png')
+		arr_img = plt.imread("../images/Laberinto/salida.png", format='png')
 		image_salida = OffsetImage(arr_img, zoom=0.025)
 		image_salida.image.axes = axes
 		ab = AnnotationBbox(
@@ -79,7 +79,7 @@ class Laberinto:
 		axes.add_artist(ab)
 		#Poniendo robot
 		X, Y = estado
-		imagen_robot = "./imagenes/Laberinto/robot_" + self.dir_agente + ".png"
+		imagen_robot = "../images/Laberinto/robot_" + self.dir_agente + ".png"
 		arr_img = plt.imread(imagen_robot, format='png')
 		image_robot = OffsetImage(arr_img, zoom=0.125)
 		image_robot.image.axes = axes
@@ -238,32 +238,32 @@ class Wumpus:
             axes.add_patch(t)
 
         # Cargando imagen del heroe
-        arr_img_hero = plt.imread("./imagenes/hero_" + self.dir_agente + ".png", format='png')
+        arr_img_hero = plt.imread("../images/hero_" + self.dir_agente + ".png", format='png')
         image_hero = OffsetImage(arr_img_hero, zoom=0.3)
         image_hero.image.axes = axes
 
         # Cargando imagen del Wumpus
-        arr_img_wumpus = plt.imread("./imagenes/wumpus.png", format='png')
+        arr_img_wumpus = plt.imread("../images/wumpus.png", format='png')
         image_wumpus = OffsetImage(arr_img_wumpus, zoom=0.45)
         image_wumpus.image.axes = axes
 
         # Cargando imagen del hedor
-        arr_img_stench = plt.imread("./imagenes/stench.png", format='png')
+        arr_img_stench = plt.imread("../images/stench.png", format='png')
         image_stench = OffsetImage(arr_img_stench, zoom=0.35)
         image_stench.image.axes = axes
 
         # Cargando imagen del oro
-        arr_img_gold = plt.imread("./imagenes/gold.png", format='png')
+        arr_img_gold = plt.imread("../images/gold.png", format='png')
         image_gold = OffsetImage(arr_img_gold, zoom=0.25)
         image_gold.image.axes = axes
 
         # Cargando imagen del pozo
-        arr_img_pit = plt.imread("./imagenes/pit.png", format='png')
+        arr_img_pit = plt.imread("../images/pit.png", format='png')
         image_pit = OffsetImage(arr_img_pit, zoom=0.35)
         image_pit.image.axes = axes
 
         # Cargando imagen de la brisa
-        arr_img_breeze = plt.imread("./imagenes/breeze.png", format='png')
+        arr_img_breeze = plt.imread("../images/breeze.png", format='png')
         image_breeze = OffsetImage(arr_img_breeze, zoom=0.35)
         image_breeze.image.axes = axes
 
@@ -355,32 +355,32 @@ class Wumpus:
                 axes.add_patch(t)
 
             # Cargando imagen del heroe
-            arr_img_hero = plt.imread("./imagenes/hero_" + self.dir_agente + ".png", format='png')
+            arr_img_hero = plt.imread("../images/hero_" + self.dir_agente + ".png", format='png')
             image_hero = OffsetImage(arr_img_hero, zoom=0.3)
             image_hero.image.axes = axes
 
             # Cargando imagen del Wumpus
-            arr_img_wumpus = plt.imread("./imagenes/wumpus.png", format='png')
+            arr_img_wumpus = plt.imread("../images/wumpus.png", format='png')
             image_wumpus = OffsetImage(arr_img_wumpus, zoom=0.45)
             image_wumpus.image.axes = axes
 
             # Cargando imagen del hedor
-            arr_img_stench = plt.imread("./imagenes/stench.png", format='png')
+            arr_img_stench = plt.imread("../images/stench.png", format='png')
             image_stench = OffsetImage(arr_img_stench, zoom=0.35)
             image_stench.image.axes = axes
 
             # Cargando imagen del oro
-            arr_img_gold = plt.imread("./imagenes/gold.png", format='png')
+            arr_img_gold = plt.imread("../images/gold.png", format='png')
             image_gold = OffsetImage(arr_img_gold, zoom=0.25)
             image_gold.image.axes = axes
 
             # Cargando imagen del pozo
-            arr_img_pit = plt.imread("./imagenes/pit.png", format='png')
+            arr_img_pit = plt.imread("../images/pit.png", format='png')
             image_pit = OffsetImage(arr_img_pit, zoom=0.35)
             image_pit.image.axes = axes
 
             # Cargando imagen de la brisa
-            arr_img_breeze = plt.imread("./imagenes/breeze.png", format='png')
+            arr_img_breeze = plt.imread("../images/breeze.png", format='png')
             image_breeze = OffsetImage(arr_img_breeze, zoom=0.35)
             image_breeze.image.axes = axes
 
