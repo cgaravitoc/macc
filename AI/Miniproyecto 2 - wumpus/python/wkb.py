@@ -12,6 +12,7 @@ class Agente_wkb:
 		self.base = LPQuery([])
 		self.turno = 1
 		self.loc = (0,0)
+		self.alertas = [] # new
 
 	def reaccionar_wkb(self, DEB=False):
 		if len(self.acciones) == 0:
